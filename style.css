@@ -1,0 +1,28 @@
+body, html {
+    min-height: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main {
+    display: flex;
+    gap: 30px;
+}
+
+.options {
+    width: 400px;
+    height: 600px;
+    box-shadow: 0px 0px 5px 1px gray;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(64, 1fr);
+    grid-template-rows: repeat(64, 1fr);
+    width: 600px;
+    height: 600px;
+    box-shadow: 0px 0px 5px 1px gray;
+}
