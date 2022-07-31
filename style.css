@@ -6,6 +6,7 @@ body, html {
     justify-content: center;
     align-items: center;
     font-family: 'Roboto', sans-serif;
+    color: black;
 }
 
 .main {
@@ -27,6 +28,7 @@ body, html {
     height: 600px;
     box-shadow: 0px 0px 5px 1px gray;
 }
+
 .title {
     font-size: 36px;
 }
@@ -64,6 +66,23 @@ body, html {
 }
 .slider-output {
     font-size: 20px;
+}
+
+.clear-button {
+    display: flex;
+    width: 40%;
+    height: 30px;
+    background-color: lightgray;
+    border: 2px solid gray;
+    border-radius: 5px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+}
+.clear-button:hover {
+    background-color: gray;
+    color: white;
 }
 
 .grid-container {

@@ -30,6 +30,12 @@ sliderContainer.append(slider);
 sliderContainer.append(sliderOutput);
 options.append(sliderContainer);
 
+let clearButton = document.createElement("div");
+clearButton.className = 'clear-button';
+clearButton.innerHTML = 'Clear';
+clearButton.onclick = () => updateSize(slider.value);
+options.append(clearButton);
+
 main.append(options);
 
 let container = document.createElement("div");
