@@ -2,15 +2,15 @@
  * Finally decided to write comments.
  * 
  * To do:
- * Make the event listeners for holding left click work
  * Clean CSS
- * Add color selector/background color selector
+ * Add background color selector
  * Add eraser
  * Toggle grid
  */
 
 //Default values
 let defaultSize = 64;
+let defaultColor = 'rgb(0, 0, 0)';
 let mouseDown = false;
 let toggleRainbow = false;
 
@@ -26,6 +26,7 @@ document.body.addEventListener('mouseup', () => {
 let main = document.getElementsByClassName("main")[0];
 let options = document.createElement("div");
 let title = document.createElement("div");
+let colorPicker = document.createElement("input");
 let sliderContainer = document.createElement("div");
 let slider = document.createElement("input");
 let sliderOutput = document.createElement("div");
@@ -35,13 +36,15 @@ let container = document.createElement("div");
 
 options.className = 'options';
 title.className = 'title'
+colorPicker.className = 'color-picker';
 sliderContainer.className = 'slider-container'
 slider.className = 'slider';
-rainbowButton.className = 'button';
 sliderOutput.className = 'slider-output';
+rainbowButton.className = 'button';
 clearButton.className = 'button';
 container.className = 'grid-container';
 
+colorPicker.type='color';
 slider.type ='range';slider.min='1';slider.max='128';slider.value='64';
 
 title.innerHTML = 'Etch-a-sketch'
@@ -50,6 +53,7 @@ rainbowButton.innerHTML = 'Toggle Rainbow';
 clearButton.innerHTML = 'Clear';
 
 options.append(title);
+options.append(colorPicker);
 
 sliderContainer.append(slider);
 sliderContainer.append(sliderOutput);
@@ -68,6 +72,9 @@ slider.oninput = function() {
     sliderOutput.innerHTML = `${slider.value} x ${slider.value}`
 }
 slider.onchange = (e) => buildGrid(e.target.value)
+colorPicker.onchange = (e) => {
+    defaultColor = e.target.value;
+}
 
 rainbowButton.onclick = (e) => {
     if (!toggleRainbow) {
@@ -109,7 +116,7 @@ function buildGrid(size) {
 function changeColor(e) {
     if (mouseDown || e.type == 'mousedown') {
         if (!toggleRainbow) {
-            e.target.style.backgroundColor = 'black';
+            e.target.style.backgroundColor = defaultColor;
         } else if (toggleRainbow) {
             e.target.style.backgroundColor = randomRGB();
         }
