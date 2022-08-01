@@ -5,7 +5,8 @@
  * Clean CSS
  * Add background color selector
  * Add eraser
- * Toggle grid
+ * improve toggle grid
+ * media queries
  */
 
 //Default values
@@ -35,6 +36,8 @@ let toggleGrid = document.createElement("div");
 let clearButton = document.createElement("div");
 let container = document.createElement("div");
 
+let windowDimensions = document.createElement("div");
+
 options.className = 'options';
 title.className = 'title'
 colorPicker.className = 'color-picker';
@@ -46,10 +49,12 @@ toggleGrid.className = 'button';
 clearButton.className = 'button';
 container.className = 'grid-container';
 
+windowDimensions.className = "window-dimensions";
+
 colorPicker.type='color';
 slider.type ='range';slider.min='1';slider.max='128';slider.value='64';
 
-container.onmouseenter = () => {
+options.onmouseleave = () => {
     defaultColor = colorPicker.value;
 }
 
@@ -64,6 +69,8 @@ toggleGrid.innerHTML = 'Toggle Grid'
 rainbowButton.innerHTML = 'Toggle Rainbow';
 clearButton.innerHTML = 'Clear';
 
+windowDimensions.innerHTML = `${window.innerWidth} x ${window.innerHeight}`;
+
 rainbowButton.onclick = (e) => {
     if (!toggleRainbow) {
         toggleRainbow = true;
@@ -75,16 +82,20 @@ rainbowButton.onclick = (e) => {
 };
 
 toggleGrid.onclick = (e) => {
-    if (!gridToggle) {
-        gridToggle = true;
+    gridToggle = !gridToggle
+    if (gridToggle) {
         e.target.className = 'button-selected'
     } else {
-        gridToggle = false;
         e.target.className = 'button';
     }
+    enableGrid(gridToggle);
 }
 
 clearButton.onclick = () => buildGrid(slider.value, gridToggle);
+
+window.onresize = () => {
+    windowDimensions.innerHTML = `${window.innerWidth} x ${window.innerHeight}`;
+}
 
 options.append(title);
 options.append(colorPicker);
@@ -96,6 +107,7 @@ options.append(sliderContainer);
 options.append(rainbowButton);
 options.append(toggleGrid)
 options.append(clearButton);
+options.append(windowDimensions);
 
 main.append(options);
 main.append(container);
@@ -143,4 +155,23 @@ function changeColor(e) {
             e.target.style.backgroundColor = randomRGB();
         }
     }
+}
+
+function enableGrid(gridToggle) {
+    console.log(gridToggle);
+    console.log("Hello :)")
+
+    let gridItems = document.getElementsByClassName('grid-item');
+
+    if (gridItems.length == 0) {
+        gridItems = document.getElementsByClassName('grid-item-toggle');
+    }
+
+    Array.from(gridItems).forEach((gridItem) => {
+        if (gridToggle) {
+            gridItem.className = 'grid-item-toggle'
+        } else {
+            gridItem.className = 'grid-item';
+        }
+    });
 }

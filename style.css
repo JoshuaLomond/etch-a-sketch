@@ -30,7 +30,7 @@ body, html {
     justify-content: center;
     align-items: center;
     width: 400px;
-    height: 800px;
+    height: 850px;
     box-shadow: 0px 0px 5px 1px gray;
 }
 
@@ -131,7 +131,55 @@ input[type='color']::-webkit-color-swatch {
     display: grid;
     grid-template-columns: repeat(64, 1fr);
     grid-template-rows: repeat(64, 1fr);
-    width: 800px;
-    height: 800px;
+    width: 850px;
+    height: 850px;
     box-shadow: 0px 0px 5px 1px gray;
+}
+
+@media (max-width: 1295px) {
+    .grid-container {
+        width: 750px;
+        height: 750px;
+    }
+    .options {
+        height: 750px;
+    }
+}
+@media (max-width: 1199px) {
+    .grid-container {
+        width: 650px;
+        height: 650px;
+    }
+    .options {
+        width: 350px;
+        height: 650px;
+    }
+}
+@media (max-width: 1050px) {
+    .grid-container {
+        width: 550px;
+        height: 550px;
+    }
+    .options {
+        width: 325px;
+        height: 550px;
+    }
+}
+@media (max-width: 920px) {
+    .grid-container {
+        width: 450px;
+        height: 450px;
+    }
+    .options {
+        height: 450px;
+    }
+}
+@media (max-width: 820px) {
+    .main {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .options {
+        width: 450px;
+    }
 }
