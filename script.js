@@ -13,6 +13,7 @@
 let defaultSize = 64;
 let defaultColor = 'rgb(0, 0, 0)';
 let mouseDown = false;
+let toggleColor = true;
 let toggleRainbow = false;
 let gridToggle = false;
 
@@ -26,11 +27,15 @@ document.body.addEventListener('mouseup', () => {
 //Building html structure
 let main = document.getElementsByClassName("main")[0];
 let options = document.createElement("div");
+
 let title = document.createElement("div");
 let colorPicker = document.createElement("input");
+
 let sliderContainer = document.createElement("div");
 let slider = document.createElement("input");
 let sliderOutput = document.createElement("div");
+
+let colorButton = document.createElement("div");
 let rainbowButton = document.createElement("div");
 let toggleGrid = document.createElement("div");
 let clearButton = document.createElement("div");
@@ -41,9 +46,12 @@ let windowDimensions = document.createElement("div");
 options.className = 'options';
 title.className = 'title'
 colorPicker.className = 'color-picker';
+
 sliderContainer.className = 'slider-container'
 slider.className = 'slider';
 sliderOutput.className = 'slider-output';
+
+colorButton.className ='button-selected';
 rainbowButton.className = 'button';
 toggleGrid.className = 'button';
 clearButton.className = 'button';
@@ -55,7 +63,19 @@ colorPicker.type='color';
 slider.type ='range';slider.min='1';slider.max='128';slider.value='64';
 
 options.onmouseleave = () => {
-    defaultColor = colorPicker.value;
+    if (toggleColor) {
+        defaultColor = colorPicker.value;
+    }
+}
+
+colorPicker.onclick = () => {
+    if (!toggleColor && toggleRainbow) {
+        toggleColor = !toggleColor;
+        toggleRainbow = !toggleRainbow;
+
+        colorButton.className = "button-selected";
+        rainbowButton.className = "button";
+    }
 }
 
 slider.oninput = () => {
@@ -65,19 +85,29 @@ slider.onchange = (e) => buildGrid(e.target.value, gridToggle);
 
 title.innerHTML = 'Etch-a-sketch'
 sliderOutput.innerHTML = `${slider.value} x ${slider.value}`
+colorButton.innerHTML = 'Color Mode';
+rainbowButton.innerHTML = 'Rainbow Mode';
 toggleGrid.innerHTML = 'Toggle Grid'
-rainbowButton.innerHTML = 'Toggle Rainbow';
 clearButton.innerHTML = 'Clear';
 
 windowDimensions.innerHTML = `${window.innerWidth} x ${window.innerHeight}`;
 
+colorButton.onclick = (e) => {
+    if (!toggleColor && toggleRainbow) {
+        toggleColor = !toggleColor;
+        toggleRainbow = !toggleRainbow;
+
+        e.target.className = "button-selected";
+        rainbowButton.className = "button";
+    }
+}
+
 rainbowButton.onclick = (e) => {
-    if (!toggleRainbow) {
-        toggleRainbow = true;
-        e.target.className = 'button-selected';
-    } else {
-        toggleRainbow = false;
-        e.target.className = 'button';
+    if (!toggleRainbow && toggleColor) {
+        toggleColor = !toggleColor;
+        toggleRainbow = !toggleRainbow;
+        e.target.className = "button-selected";
+        colorButton.className = "button";
     }
 };
 
@@ -102,8 +132,9 @@ options.append(colorPicker);
 
 sliderContainer.append(slider);
 sliderContainer.append(sliderOutput);
-
 options.append(sliderContainer);
+
+options.append(colorButton);
 options.append(rainbowButton);
 options.append(toggleGrid)
 options.append(clearButton);
@@ -158,9 +189,6 @@ function changeColor(e) {
 }
 
 function enableGrid(gridToggle) {
-    console.log(gridToggle);
-    console.log("Hello :)")
-
     let gridItems = document.getElementsByClassName('grid-item');
 
     if (gridItems.length == 0) {
