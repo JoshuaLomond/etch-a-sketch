@@ -9,8 +9,52 @@
     <title>Etch-a-Sketch</title>
 </head>
 <body>
-    <div class="main"></div>
+
+    <div class="main">
+
+        <div class='options' id='options'>
+
+            <div class='title'>Etch-a-sketch</div>
+
+            <div class="title-container">
+
+                <div class="color-title">Color</div>
+                <div class="background-title">Background</div>
+
+            </div>
+
+            <div class="color-container">
+
+                <input type='color' class="color-picker">
+                <input type="color" value="#FFFFFF" class="background-picker">
+
+            </div>
+
+            <div class="slider-container">
+
+                <input type="range" min="1" max="128" value="64" class="slider">
+                <div class="slider-output"></div>
+
+            </div>
+
+            <div class="button-selected" id="color">Color Mode</div>
+
+            <div class="button" id="rainbow">Rainbow Mode</div>
+
+            <div class="button" id="eraser">Eraser</div>
+
+            <div class="button" id="grid">Toggle Grid</div>
+
+            <div class="button" id="clear">Clear</div>
+
+        </div>
+
+        <div class="grid-container"></div>
+
+    </div>
+
     <script src="script.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
+
 </body>
 </html>
