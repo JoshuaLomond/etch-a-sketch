@@ -98,6 +98,7 @@ body {
   font-weight: 700;
   background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   /* Gradient text effect */
 }
@@ -160,6 +161,8 @@ button.active {
 /* Color Picker Input Styling */
 input[type="color"] {
   -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   border: none;
   width: 36px;
   height: 36px;
@@ -205,6 +208,9 @@ input[type="color"]::-webkit-color-swatch {
   overflow: hidden;
   touch-action: none;
   /* Critical: disables browser scrolling to allow drawing */
+  user-select: none;
+  /* Prevent selection/dragging on desktop */
+  -webkit-user-select: none;
   border: 1px solid var(--toolbar-border);
 }
 

@@ -74,7 +74,10 @@ export default function Grid({
       style={{
         gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
       }}
-      onMouseDown={() => setIsDrawing(true)}
+      onMouseDown={(e) => {
+        e.preventDefault(); // Prevent default drag behavior
+        setIsDrawing(true);
+      }}
       onMouseUp={() => setIsDrawing(false)}
       onMouseLeave={() => setIsDrawing(false)}
       onTouchStart={() => setIsDrawing(true)}
