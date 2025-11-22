@@ -1,19 +1,34 @@
 :root {
-  /* Light Mode (Default) */
+  /* 
+   * CSS Variables for Theming 
+   * Defines the color palette for both Light (default) and Dark modes.
+   */
+
+  /* Light Mode Palette */
   --bg-color: #fafafa;
+  /* Main application background */
   --text-color: #111;
+  /* Primary text color */
   --grid-bg: #ffffff;
+  /* Background of the drawing grid */
   --grid-line: #f0f0f0;
+  /* Color of the grid lines */
   --toolbar-bg: rgba(255, 255, 255, 0.9);
+  /* Translucent toolbar background */
   --toolbar-border: #e0e0e0;
+  /* Border color for toolbar and separators */
   --button-bg: #e0e0e0;
+  /* Default button background */
   --button-hover: #ccc;
+  /* Button background on hover */
   --button-active: #bbb;
+  /* Button background on active/click */
   --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  /* Soft shadow for depth */
 }
 
+/* Dark Mode Palette overrides */
 [data-theme="dark"] {
-  /* Dark Mode */
   --bg-color: #1a1a1a;
   --text-color: #f0f0f0;
   --grid-bg: #2a2a2a;
@@ -26,18 +41,22 @@
   --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
 }
 
+/* Global Reset and Base Styles */
 html,
 body {
   margin: 0;
   padding: 0;
   height: 100%;
   overflow: hidden;
+  /* Prevent scrolling on the body */
   font-family: 'Inter', system-ui, sans-serif;
   background: var(--bg-color);
   color: var(--text-color);
   transition: background-color 0.3s, color 0.3s;
+  /* Smooth theme transition */
 }
 
+/* Main Application Container */
 .app {
   display: flex;
   flex-direction: column;
@@ -45,11 +64,14 @@ body {
   height: 100vh;
   width: 100vw;
   padding-top: 80px;
-  /* Space for fixed toolbar */
+  /* Reserve space for the fixed toolbar */
   box-sizing: border-box;
 }
 
-/* Fixed Toolbar */
+/* 
+ * Toolbar Styles
+ * Fixed header containing all application controls.
+ */
 .toolbar {
   position: fixed;
   top: 0;
@@ -58,6 +80,7 @@ body {
   height: 70px;
   background-color: var(--toolbar-bg);
   backdrop-filter: blur(10px);
+  /* Glassmorphism effect */
   border-bottom: 1px solid var(--toolbar-border);
   display: flex;
   align-items: center;
@@ -68,6 +91,7 @@ body {
   transition: background-color 0.3s, border-color 0.3s;
 }
 
+/* Application Title */
 .toolbar h1 {
   font-size: 1.5rem;
   margin: 0;
@@ -75,14 +99,17 @@ body {
   background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  /* Gradient text effect */
 }
 
+/* Control Groups Container */
 .controls {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 
+/* Individual Control Group (separated by borders) */
 .control-group {
   display: flex;
   gap: 0.5rem;
@@ -91,11 +118,13 @@ body {
   border-left: 1px solid var(--toolbar-border);
 }
 
+/* Remove border/padding for the first group */
 .control-group:first-child {
   border-left: none;
   padding-left: 0;
 }
 
+/* Button Styles */
 button {
   padding: 0.5rem 1rem;
   border: none;
@@ -114,6 +143,7 @@ button {
 button:hover {
   background-color: var(--button-hover);
   transform: translateY(-1px);
+  /* Subtle lift effect */
 }
 
 button:active {
@@ -121,11 +151,13 @@ button:active {
   transform: translateY(0);
 }
 
+/* Active State for Toggle Buttons */
 button.active {
   background-color: #4ecdc4;
   color: #fff;
 }
 
+/* Color Picker Input Styling */
 input[type="color"] {
   -webkit-appearance: none;
   border: none;
@@ -148,7 +180,7 @@ input[type="color"]::-webkit-color-swatch {
   border-radius: 50%;
 }
 
-/* Grid Container */
+/* Grid Container - Centers the grid in the remaining space */
 .grid-container {
   flex: 1;
   display: flex;
@@ -160,10 +192,11 @@ input[type="color"]::-webkit-color-swatch {
   overflow: hidden;
 }
 
+/* The Drawing Grid */
 .grid {
   display: grid;
   aspect-ratio: 1 / 1;
-  /* Fit within available space, leaving some margin */
+  /* Responsive sizing: fits within viewport minus toolbar and margins */
   width: min(90vw, calc(100vh - 100px));
   height: min(90vw, calc(100vh - 100px));
   background-color: var(--grid-bg);
@@ -171,10 +204,11 @@ input[type="color"]::-webkit-color-swatch {
   border-radius: 12px;
   overflow: hidden;
   touch-action: none;
-  /* Critical for custom touch handling */
+  /* Critical: disables browser scrolling to allow drawing */
   border: 1px solid var(--toolbar-border);
 }
 
+/* Grid Cells */
 .cell {
   width: 100%;
   height: 100%;
@@ -185,13 +219,13 @@ input[type="color"]::-webkit-color-swatch {
   border-left: none;
 }
 
-/* Add top/left borders to grid container to complete the grid */
+/* Add top/left borders to grid container to complete the grid visual */
 .grid {
   border-top: 1px solid var(--grid-line);
   border-left: 1px solid var(--grid-line);
 }
 
-/* Popover for Grid Size */
+/* Popover for Grid Size Slider */
 .popover {
   position: absolute;
   top: 80px;
@@ -216,7 +250,7 @@ input[type="color"]::-webkit-color-swatch {
   font-weight: 600;
 }
 
-/* Mobile Responsive */
+/* Mobile Responsive Adjustments */
 @media (max-width: 768px) {
   .toolbar {
     padding: 0 1rem;
@@ -234,19 +268,25 @@ input[type="color"]::-webkit-color-swatch {
 
   .controls {
     width: 100%;
-    justify-content: space-between;
+    /* Distribute items evenly but keep them closer together */
+    justify-content: center;
     gap: 0.5rem;
   }
 
   .control-group {
     padding-left: 0.5rem;
-    gap: 0.25rem;
+    gap: 0.5rem;
+    /* Increased gap for better touch targets */
+  }
+
+  /* Ensure the first group doesn't have extra padding/border */
+  .control-group:first-child {
+    padding-left: 0;
+    border-left: none;
   }
 
   button span {
     display: none;
-    /* Hide text on mobile, show only icons if possible */
+    /* Hide text on mobile, show only icons */
   }
-
-  /* Show text for specific buttons if needed, or rely on icons */
 }

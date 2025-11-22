@@ -1,5 +1,16 @@
 import { useEffect, useState, useRef } from "react";
 
+/**
+ * Grid Component
+ * Renders the interactive drawing grid. Handles drawing logic for both mouse and touch events.
+ *
+ * @param {Object} props
+ * @param {number} props.gridSize - The dimension of the grid (N x N).
+ * @param {string} props.selectedColor - The current color to draw with.
+ * @param {boolean} props.isEraser - Whether the eraser tool is active.
+ * @param {number} props.resetTrigger - Incrementing counter to trigger a grid clear.
+ * @param {string} props.theme - Current UI theme ('light' or 'dark').
+ */
 export default function Grid({
   gridSize,
   selectedColor,
@@ -11,34 +22,46 @@ export default function Grid({
   const [isDrawing, setIsDrawing] = useState(false);
   const gridRef = useRef(null);
 
-  // Initialize grid
+  /**
+   * Effect: Initialize or Reset Grid
+   * Re-creates the grid cells array whenever the grid size changes or the reset trigger is fired.
+   * Cells are initialized with 'transparent' to show the underlying grid background.
+   */
   useEffect(() => {
-    // Use CSS variable for default background or hardcode based on theme if needed,
-    // but here we initialize with 'transparent' so the grid background shows through.
-    // Or we can initialize with a specific color.
-    // Let's use 'transparent' to allow easy erasing (restoring to grid bg).
     const newCells = Array(gridSize * gridSize).fill("transparent");
     setCells(newCells);
   }, [gridSize, resetTrigger]);
 
+  /**
+   * Updates the color of a specific cell.
+   * If Eraser mode is active, sets the cell to 'transparent'.
+   * Otherwise, sets it to the selected color.
+   *
+   * @param {number} index - The index of the cell to update.
+   */
   const handleDraw = (index) => {
     setCells((prev) => {
       const newCells = [...prev];
-      // If eraser, set to transparent (shows grid background)
-      // If drawing, set to selectedColor
       newCells[index] = isEraser ? "transparent" : selectedColor;
       return newCells;
     });
   };
 
-  // Touch handling for mobile
+  /**
+   * Handles touch move events for mobile devices.
+   * Calculates the element under the user's finger to enable continuous drawing while dragging.
+   *
+   * @param {TouchEvent} e - The touch event object.
+   */
   const handleTouchMove = (e) => {
-    e.preventDefault(); // Prevent scrolling while drawing
+    e.preventDefault(); // Prevent default browser scrolling behavior
     if (!isDrawing) return;
 
     const touch = e.touches[0];
+    // Identify the DOM element at the touch coordinates
     const target = document.elementFromPoint(touch.clientX, touch.clientY);
 
+    // If the target is a valid cell, update its color
     if (target && target.dataset.index) {
       handleDraw(Number(target.dataset.index));
     }
@@ -50,7 +73,6 @@ export default function Grid({
       className="grid"
       style={{
         gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
-        // We don't need to set bg color here as it's handled by CSS class .grid
       }}
       onMouseDown={() => setIsDrawing(true)}
       onMouseUp={() => setIsDrawing(false)}
@@ -62,7 +84,7 @@ export default function Grid({
       {cells.map((color, i) => (
         <div
           key={i}
-          data-index={i} // data attribute for touch detection
+          data-index={i} // Used for touch detection
           className="cell"
           style={{ backgroundColor: color }}
           onMouseDown={() => handleDraw(i)}
