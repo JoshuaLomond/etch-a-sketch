@@ -107,6 +107,44 @@ export default function App() {
   };
 
   /**
+   * Exports the current sketch as a PNG image.
+   * Renders the grid state to an off-screen canvas and triggers a download.
+   */
+  const handleExportPNG = () => {
+    const canvas = document.createElement("canvas");
+    const size = 1024; // High resolution for export
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext("2d");
+
+    // 1. Fill background based on theme
+    // Light theme: #ffffff, Dark theme: #2a2a2a (matching CSS --grid-bg)
+    ctx.fillStyle = theme === "light" ? "#ffffff" : "#2a2a2a";
+    ctx.fillRect(0, 0, size, size);
+
+    // 2. Draw cells
+    const cellSize = size / gridSize;
+    cells.forEach((color, index) => {
+      if (color !== "transparent") {
+        const x = (index % gridSize) * cellSize;
+        const y = Math.floor(index / gridSize) * cellSize;
+        ctx.fillStyle = color;
+        // Draw slightly larger to avoid potential sub-pixel gaps
+        ctx.fillRect(x, y, Math.ceil(cellSize), Math.ceil(cellSize));
+      }
+    });
+
+    // 3. Convert to PNG and download
+    const url = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `etch-a-sketch-${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  /**
    * Imports a sketch from a JSON file.
    * Prompts the user to select a file and loads the sketch data.
    */
@@ -231,7 +269,12 @@ export default function App() {
       </div>
 
       {/* Footer with Import/Export */}
-      <Footer onExport={handleExport} onImport={handleImport} />
+      {/* Footer with Import/Export */}
+      <Footer
+        onExport={handleExport}
+        onImport={handleImport}
+        onExportPNG={handleExportPNG}
+      />
     </div>
   );
 }
