@@ -30,9 +30,21 @@ export default function Grid({
    * Re-creates the grid cells array when the reset trigger is fired.
    * Cells are initialized with 'transparent' to show the underlying grid background.
    */
+  const prevResetTrigger = useRef(resetTrigger);
+
   useEffect(() => {
-    setCells(Array(gridSize * gridSize).fill("transparent"));
-  }, [resetTrigger, setCells]);
+    const resetTriggered = prevResetTrigger.current !== resetTrigger;
+    const sizeMismatch = cells.length !== gridSize * gridSize;
+
+    // Reset cells if:
+    // 1. Reset/clear was triggered (resetTrigger changed), OR
+    // 2. Grid size changed and array size doesn't match (but not import)
+    if (resetTriggered || sizeMismatch) {
+      setCells(Array(gridSize * gridSize).fill("transparent"));
+    }
+
+    prevResetTrigger.current = resetTrigger;
+  }, [gridSize, resetTrigger, setCells, cells.length]);
 
   /**
    * Updates the color of a specific cell.
