@@ -203,8 +203,8 @@ input[type="color"]::-webkit-color-swatch {
   display: grid;
   aspect-ratio: 1 / 1;
   /* Responsive sizing: fits within viewport minus toolbar and margins */
-  width: min(90vw, calc(100vh - 100px));
-  height: min(90vw, calc(100vh - 100px));
+  width: min(90vw, calc(100vh - 200px));
+  height: min(90vw, calc(100vh - 200px));
   background-color: var(--grid-bg);
   box-shadow: var(--shadow);
   border-radius: 12px;
