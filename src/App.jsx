@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import Grid from "./components/Grid";
+import Footer from "./components/Footer";
 
 /**
  * Main Application Component
@@ -27,6 +28,11 @@ export default function App() {
 
   // Visibility state for the grid size slider popover.
   const [showSizePopover, setShowSizePopover] = useState(false);
+
+  // Grid cells state - lifted from Grid component for import/export functionality
+  const [cells, setCells] = useState(
+    Array(gridSize * gridSize).fill("transparent")
+  );
 
   // --- Effects ---
 
@@ -73,6 +79,73 @@ export default function App() {
     setGridSize(newSize);
     // The Grid component's useEffect depends on gridSize, so it will
     // automatically reset/clear the grid when this value changes.
+  };
+
+  /**
+   * Exports the current sketch as a JSON file.
+   * Creates a downloadable file containing sketch metadata and cell data.
+   */
+  const handleExport = () => {
+    const sketchData = {
+      version: "1.0",
+      gridSize: gridSize,
+      cells: cells,
+      exportedAt: new Date().toISOString(),
+    };
+
+    const blob = new Blob([JSON.stringify(sketchData, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `sketch-${Date.now()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  /**
+   * Imports a sketch from a JSON file.
+   * Prompts the user to select a file and loads the sketch data.
+   */
+  const handleImport = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const sketchData = JSON.parse(event.target.result);
+
+          // Validate the imported data
+          if (
+            !sketchData.version ||
+            !sketchData.gridSize ||
+            !sketchData.cells
+          ) {
+            alert("Invalid sketch file format.");
+            return;
+          }
+
+          // Load the sketch
+          setGridSize(sketchData.gridSize);
+          setCells(sketchData.cells);
+        } catch (error) {
+          alert(
+            "Error reading sketch file. Please ensure it's a valid sketch file."
+          );
+          console.error("Import error:", error);
+        }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
   };
 
   return (
@@ -152,8 +225,13 @@ export default function App() {
           isEraser={isEraser}
           resetTrigger={resetTrigger}
           theme={theme}
+          cells={cells}
+          setCells={setCells}
         />
       </div>
+
+      {/* Footer with Import/Export */}
+      <Footer onExport={handleExport} onImport={handleImport} />
     </div>
   );
 }

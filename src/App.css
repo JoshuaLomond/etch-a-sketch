@@ -23,7 +23,8 @@
   /* Button background on hover */
   --button-active: #bbb;
   /* Button background on active/click */
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   /* Soft shadow for depth */
 }
 
@@ -49,7 +50,7 @@ body {
   height: 100%;
   overflow: hidden;
   /* Prevent scrolling on the body */
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
   background: var(--bg-color);
   color: var(--text-color);
   transition: background-color 0.3s, color 0.3s;
@@ -65,6 +66,8 @@ body {
   width: 100vw;
   padding-top: 80px;
   /* Reserve space for the fixed toolbar */
+  padding-bottom: 70px;
+  /* Reserve space for the fixed footer */
   box-sizing: border-box;
 }
 
@@ -294,5 +297,38 @@ input[type="color"]::-webkit-color-swatch {
   button span {
     display: none;
     /* Hide text on mobile, show only icons */
+  }
+}
+
+/* Footer Styles */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: var(--toolbar-bg);
+  backdrop-filter: blur(10px);
+  /* Glassmorphism effect */
+  border-top: 1px solid var(--toolbar-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 -2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.footer-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Mobile Responsive Adjustments for Footer */
+@media (max-width: 768px) {
+  .footer {
+    height: 50px;
   }
 }

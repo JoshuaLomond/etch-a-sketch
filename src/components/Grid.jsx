@@ -10,6 +10,8 @@ import { useEffect, useState, useRef } from "react";
  * @param {boolean} props.isEraser - Whether the eraser tool is active.
  * @param {number} props.resetTrigger - Incrementing counter to trigger a grid clear.
  * @param {string} props.theme - Current UI theme ('light' or 'dark').
+ * @param {Array} props.cells - The array of cell colors.
+ * @param {Function} props.setCells - Function to update the cells array.
  */
 export default function Grid({
   gridSize,
@@ -17,20 +19,20 @@ export default function Grid({
   isEraser,
   resetTrigger,
   theme,
+  cells,
+  setCells,
 }) {
-  const [cells, setCells] = useState([]);
   const [isDrawing, setIsDrawing] = useState(false);
   const gridRef = useRef(null);
 
   /**
-   * Effect: Initialize or Reset Grid
-   * Re-creates the grid cells array whenever the grid size changes or the reset trigger is fired.
+   * Effect: Reset Grid
+   * Re-creates the grid cells array when the reset trigger is fired.
    * Cells are initialized with 'transparent' to show the underlying grid background.
    */
   useEffect(() => {
-    const newCells = Array(gridSize * gridSize).fill("transparent");
-    setCells(newCells);
-  }, [gridSize, resetTrigger]);
+    setCells(Array(gridSize * gridSize).fill("transparent"));
+  }, [resetTrigger, setCells]);
 
   /**
    * Updates the color of a specific cell.
